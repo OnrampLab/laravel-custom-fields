@@ -1,0 +1,101 @@
+{
+    "name": "onramplab/laravel-package-template",
+    "description": "An laravel template",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "template",
+        "laravel",
+        "package",
+        "skeleton",
+        "boilerplate",
+        "laravel template",
+        "package template",
+        "laravel package template"
+    ],
+    "authors": [
+        {
+            "name": "Onramp Lab",
+            "email": "dev@onramplab.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.4",
+        "illuminate/support": "^8.0|^9.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.5",
+        "nunomaduro/phpinsights": "^2.6",
+        "onramplab/onr-phpcs-laravel": "^1.2",
+        "phpmd/phpmd": "^2.13",
+        "orchestra/testbench": "^6.25",
+        "nunomaduro/larastan": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.15.3",
+        "sempro/phpunit-pretty-print": "^1.4",
+        "spatie/phpunit-watcher": "^1.23",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "OnrampLab\\LaravelPackageTemplate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OnrampLab\\LaravelPackageTemplate\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "OnrampLab\\LaravelPackageTemplate\\LaravelPackageTemplateServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "test": [
+            "@php vendor/bin/phpunit"
+        ],
+        "test:watch": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpunit-watcher watch --filter NoneTest < /dev/tty"
+        ],
+        "psr2check": [
+            "@php vendor/bin/phpcs --standard=PSR2 src/"
+        ],
+        "psr2autofix": [
+            "@php vendor/bin/phpcbf --standard=PSR2 src/"
+        ],
+        "docs": [
+            "@php tools/phpDocumentor"
+        ],
+        "insights": [
+            "@php vendor/bin/phpinsights --no-interaction"
+        ],
+        "insights:fix": [
+            "@php vendor/bin/phpinsights --no-interaction --fix"
+        ],
+        "dependencies:check": [
+            "phpmd src text rulesets.xml"
+        ],
+        "rector": [
+            "vendor/bin/rector process src --dry-run"
+        ],
+        "rector:fix": [
+            "vendor/bin/rector process src"
+        ]
+    }
+}

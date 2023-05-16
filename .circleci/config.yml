@@ -1,0 +1,75 @@
+version: 2.1
+
+commands:
+  run_test:
+    description: "Run test"
+    steps:
+      - checkout
+      - run:
+          name: Install PHP Extensions
+          command: |
+            # sudo docker-php-ext-install mbstring
+            # sudo docker-php-ext-enable mbstring
+            sudo wget -O phive.phar https://phar.io/releases/phive.phar
+            sudo wget -O phive.phar.asc https://phar.io/releases/phive.phar.asc
+            sudo gpg --keyserver hkps://keys.openpgp.org --recv-keys 0x9D8A98B29B2D5D79
+            sudo gpg --verify phive.phar.asc phive.phar
+            sudo chmod +x phive.phar
+            sudo mv phive.phar /usr/local/bin/phive
+
+            phive install --force-accept-unsigned --trust-gpg-keys 67F861C3D889C656 phpDocumentor
+
+      - restore_cache:
+          key: dependency-cache-composer-{{ checksum "composer.json" }}
+      - run:
+          name: Install composer packages
+          command: |
+            composer install
+      - save_cache:
+          key: dependency-cache-composer-{{ checksum "composer.json" }}
+          paths:
+            - ~/app/vendor
+      - run:
+          name: Run PHPCS for main branch
+          command: |
+            tools/scripts/phpcs-all-files.sh
+      - run:
+          name: Run PHP insights
+          command: |
+            composer insights
+      - run:
+          name: Run rector
+          command: |
+            composer rector
+      - run:
+          name: Do static analysis
+          command: |
+            vendor/bin/phpstan
+      - run:
+          name: Test
+          command: |
+            vendor/bin/phpunit -d memory_limit=386M
+      - run:
+          name: Build Documents
+          command: |
+            composer docs
+      - store_artifacts:
+          path: ./build/api/
+jobs:
+  run_test:
+    working_directory: ~/app
+    docker:
+      - image: cimg/php:7.4.33
+    steps:
+      - run_test
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - run_test:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: /.*/

@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  php:
+    build: .
+    image: php:7.4
+    environment:
+      PHP_EXTENSION_INTL: 1
+      PHP_EXTENSION_PDO_SQLITE: 1
+    volumes:
+      - ./:/var/www/html
+
+networks:
+  default:
+      driver:
+          bridge
+      ipam:
+        config:
+        - subnet: "${DOCKER_SUBNET:-172.35.0.0/24}"
