@@ -1,17 +1,17 @@
 {
-    "name": "onramplab/laravel-package-template",
-    "description": "An laravel template",
+    "name": "onramplab/laravel-custom-fields",
+    "description": "An laravel package that enables custom field support for any Laravel models",
     "type": "library",
     "license": "MIT",
     "keywords": [
-        "template",
+        "custom fields",
+        "model custom fields",
         "laravel",
+        "eloquent",
+        "eloquent custom",
         "package",
-        "skeleton",
-        "boilerplate",
-        "laravel template",
-        "package template",
-        "laravel package template"
+        "laravel package",
+        "laravel custom fields"
     ],
     "authors": [
         {
@@ -22,7 +22,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
+        "doctrine/dbal": "^3.6",
         "illuminate/support": "^8.0|^9.0"
     },
     "require-dev": {
@@ -40,12 +41,12 @@
     },
     "autoload": {
         "psr-4": {
-            "OnrampLab\\LaravelPackageTemplate\\": "src/"
+            "OnrampLab\\CustomFields\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OnrampLab\\LaravelPackageTemplate\\Tests\\": "tests"
+            "OnrampLab\\CustomFields\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -54,7 +55,7 @@
         },
         "laravel": {
             "providers": [
-                "OnrampLab\\LaravelPackageTemplate\\LaravelPackageTemplateServiceProvider"
+                "OnrampLab\\CustomFields\\CustomFieldsServiceProvider"
             ]
         }
     },
