@@ -1,9 +1,9 @@
 <?php
 
-namespace Onramplab\LaravelPackageTemplate\Tests;
+namespace OnrampLab\CustomFields\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use OnrampLab\LaravelPackageTemplate\LaravelPackageTemplateServiceProvider;
+use OnrampLab\CustomFields\CustomFieldsServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -25,13 +25,25 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations()
+    {
+        $this->loadLaravelMigrations();
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/Migrations');
+    }
+
+    /**
      * @param \Illuminate\Foundation\Application $app
      * @return array
      */
     protected function getPackageProviders($app)
     {
         return [
-            LaravelPackageTemplateServiceProvider::class,
+            CustomFieldsServiceProvider::class,
         ];
     }
 }
