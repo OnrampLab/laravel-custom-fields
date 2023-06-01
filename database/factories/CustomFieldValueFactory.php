@@ -20,8 +20,8 @@ class CustomFieldValueFactory extends Factory
         return [
             'custom_field_id' => CustomField::factory(),
             'value' => $this->faker->word(),
-            'model_id' => $this->faker->randomNumber(),
-            'model_type' => $this->faker->word(),
+            'customizable_id' => $this->faker->randomNumber(),
+            'customizable_type' => $this->faker->word(),
         ];
     }
 }

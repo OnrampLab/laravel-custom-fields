@@ -18,12 +18,13 @@ class CustomFieldFactory extends Factory
     {
         return [
             'friendly_name' => $this->faker->word(),
-            'field_key' => $this->faker->slug(),
-            'field_type' => $this->faker->randomElement(['text', 'integer']),
+            'key' => $this->faker->slug(),
+            'type' => $this->faker->randomElement(['text', 'integer']),
+            'available_options' => [],
             'required' => $this->faker->boolean(),
             'default_value' => $this->faker->optional()->word,
             'description' => $this->faker->optional()->paragraph,
-            'model' => $this->faker->word(),
+            'model_class' => $this->faker->word(),
             'contextable_id' => $this->faker->randomNumber(),
             'contextable_type' => $this->faker->word(),
         ];

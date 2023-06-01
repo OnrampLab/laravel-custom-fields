@@ -18,14 +18,14 @@ return new class extends Migration
             $table->string('friendly_name');
             $table->string('key');
             $table->enum('type', ['text', 'integer', 'float', 'datetime', 'select', 'boolean']);
-            $table->json('available_options');
+            $table->json('available_options')->nullable();
             $table->boolean('required')->default(0);
             $table->string('default_value')->nullable();
             $table->text('description')->nullable();
             $table->string('model_class');
             $table->unsignedBigInteger('contextable_id')->nullable();
             $table->string('contextable_type')->nullable();
-            $table->unique(['key', 'model_class', 'contextable_type', 'contextable_id']);
+            $table->unique(['key', 'model_class', 'contextable_type', 'contextable_id'], 'custom_fields_key_model_class_contextable_unique');
             $table->timestamps();
         });
     }
