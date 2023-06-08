@@ -25,7 +25,7 @@ class User extends BaseUser
         return $this->belongsTo(Account::class);
     }
 
-    public function getContext(): Model
+    public function getCustomFieldContext(): Model
     {
         return $this->account;
     }

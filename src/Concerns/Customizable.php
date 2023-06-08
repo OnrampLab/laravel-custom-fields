@@ -16,7 +16,7 @@ use OnrampLab\CustomFields\Observers\ModelObserver;
  */
 trait Customizable
 {
-    protected ?array $validatedCustomFieldValues = [];
+    protected array $validatedCustomFieldValues = [];
 
     public static function bootCustomizable(): void
     {
@@ -37,21 +37,20 @@ trait Customizable
     public function validateCustomFields(): void
     {
         $customFields = $this->getCustomFields();
+        $tableColumns = $this->getTableColumns();
+        $modelAttributes = Collection::make($this->getAttributes());
+        $this->setRawAttributes($modelAttributes->only($tableColumns)->toArray());
         if ($customFields->isEmpty()) {
             return;
         }
-        $tableColumns = $this->getTableColumns();
-        $modelAttributes = Collection::make($this->getAttributes());
         $modelAttributeKeys = $modelAttributes->keys();
         $customFieldColumns = $modelAttributeKeys->diff($tableColumns);
         $customFieldsRules = $customFields->flatMap(function (CustomField $field) {
             return $field->getValidationRule();
         })->all();
-
         $customFieldValues = $modelAttributes->only($customFieldColumns)->toArray();
         $validator = Validator::make($customFieldValues, $customFieldsRules);
         $this->validatedCustomFieldValues = $validator->validate();
-        $this->setRawAttributes($modelAttributes->only($tableColumns)->toArray());
     }
 
     protected function getTableColumns(): Collection
@@ -61,13 +60,15 @@ trait Customizable
 
     public function getCustomFields(): Collection
     {
-        $context = $this->getContext();
+        $context = $this->getCustomFieldContext();
         $query = CustomField::query();
+        $query->where('model_class', get_class($this));
+
         if (is_null($context)) {
             $customFields = $query->get();
         } else {
             $customFields = $query
-                ->where('contextable_type', get_class($context))
+                ->where('contextable_type', $context->getMorphClass())
                 ->where('contextable_id', $context->id)
                 ->get();
         }
@@ -75,7 +76,7 @@ trait Customizable
         return $customFields;
     }
 
-    public function getContext(): ?Model
+    public function getCustomFieldContext(): ?Model
     {
         return null;
     }
@@ -92,7 +93,7 @@ trait Customizable
                 $value = $validatedCustomFieldValues[$customField->key];
                 $constraints = [
                     'custom_field_id' => $customField->id,
-                    'customizable_type' => get_class($this),
+                    'customizable_type' => $this->getMorphClass(),
                     'customizable_id' => $this->id
                 ];
                 $values = ['value' => $value];
