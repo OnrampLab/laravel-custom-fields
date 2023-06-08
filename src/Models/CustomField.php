@@ -20,6 +20,7 @@ class CustomField extends Model
     public const TYPE_FLOAT = 'float';
     public const TYPE_DATETIME = 'datetime';
     public const TYPE_SELECT = 'select';
+    public const TYPE_BOOLEAN = 'boolean';
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +50,8 @@ class CustomField extends Model
         CustomField::TYPE_INTEGER => IntegerCustomField::class,
         CustomField::TYPE_FLOAT => FloatCustomField::class,
         CustomField::TYPE_DATETIME => DateTimeCustomField::class,
-        CustomField::TYPE_SELECT => SelectCustomField::class
+        CustomField::TYPE_SELECT => SelectCustomField::class,
+        CustomField::TYPE_BOOLEAN => BooleanCustomField::class
     ];
 
     protected static function newFactory(): Factory
