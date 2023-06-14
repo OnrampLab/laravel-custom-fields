@@ -14,4 +14,10 @@ class FloatCustomField extends CustomField
             $this->key => ['numeric'],
         ];
     }
+
+    public function parseValue($value): float
+    {
+        return (float) $value;
+    }
+
 }

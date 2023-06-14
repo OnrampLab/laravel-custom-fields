@@ -14,4 +14,10 @@ class IntegerCustomField extends CustomField
             $this->key => ['integer'],
         ];
     }
+
+    public function parseValue($value): int
+    {
+        return (int) $value;
+    }
+
 }

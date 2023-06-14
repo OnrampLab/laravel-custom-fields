@@ -2,6 +2,7 @@
 
 namespace OnrampLab\CustomFields\Models;
 
+use Carbon\Carbon;
 use Parental\HasParent;
 
 class DateTimeCustomField extends CustomField
@@ -13,5 +14,9 @@ class DateTimeCustomField extends CustomField
         return [
             $this->key => ['date'],
         ];
+    }
+    public function parseValue($value): string
+    {
+        return Carbon::parse($value)->toDateTimeString();
     }
 }

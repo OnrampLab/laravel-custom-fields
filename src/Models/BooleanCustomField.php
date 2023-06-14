@@ -14,4 +14,10 @@ class BooleanCustomField extends CustomField
             $this->key => ['boolean'],
         ];
     }
+
+    public function parseValue($value): bool
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
 }

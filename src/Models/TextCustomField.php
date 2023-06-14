@@ -14,4 +14,9 @@ class TextCustomField extends CustomField
             $this->key => ['string'],
         ];
     }
+
+    public function parseValue($value): string
+    {
+        return $value;
+    }
 }

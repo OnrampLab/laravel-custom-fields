@@ -68,4 +68,9 @@ class CustomField extends Model
     {
         return [];
     }
+
+    public function parseValue($value): mixed
+    {
+        return $value;
+    }
 }
