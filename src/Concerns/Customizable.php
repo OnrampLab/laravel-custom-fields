@@ -18,6 +18,9 @@ trait Customizable
 {
     protected array $validatedCustomFieldValues = [];
 
+    /**
+     * Boot Model Observer.
+     */
     public static function bootCustomizable(): void
     {
         static::observe(ModelObserver::class);
@@ -53,11 +56,10 @@ trait Customizable
         $this->validatedCustomFieldValues = $validator->validate();
     }
 
-    protected function getTableColumns(): Collection
-    {
-        return Collection::make(Schema::getColumnListing($this->getTable()));
-    }
 
+    /**
+     * Get the custom fields associated with the model.
+     */
     public function getCustomFields(): Collection
     {
         $context = $this->getCustomFieldContext();
@@ -76,11 +78,17 @@ trait Customizable
         return $customFields;
     }
 
+    /**
+     * Get the context model associated with the model.
+     */
     public function getCustomFieldContext(): ?Model
     {
         return null;
     }
 
+    /**
+     * Save the custom field values.
+     */
     public function saveCustomFieldValues(): void
     {
         $validatedCustomFieldValues = $this->validatedCustomFieldValues;
@@ -100,5 +108,28 @@ trait Customizable
                 CustomFieldValue::updateOrCreate($constraints, $values);
             }
         });
+    }
+
+    /**
+     * Load custom field values and set them as model attributes.
+     */
+    public function loadCustomFieldValues(): void
+    {
+        if (! $this->customFieldValues) {
+            return;
+        }
+
+        $this->customFieldValues->each(function (CustomFieldValue $customFieldValue) {
+            $attribute = $customFieldValue->customField->key;
+            $this->setAttribute($attribute, $customFieldValue->customField->parseValue($customFieldValue->value));
+        });
+    }
+
+    /**
+     * Get the table columns of the model.
+     */
+    protected function getTableColumns(): Collection
+    {
+        return Collection::make(Schema::getColumnListing($this->getTable()));
     }
 }
