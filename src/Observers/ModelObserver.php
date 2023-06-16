@@ -15,4 +15,9 @@ class ModelObserver
     {
         $model->saveCustomFieldValues();
     }
+
+    public function retrieved(Model $model): void
+    {
+        $model->loadCustomFieldValues();
+    }
 }

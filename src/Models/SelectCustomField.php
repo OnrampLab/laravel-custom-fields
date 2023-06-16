@@ -16,4 +16,8 @@ class SelectCustomField extends CustomField
             $this->key => [Rule::in($options)]
         ];
     }
+    public function parseValue($value): string
+    {
+        return $value;
+    }
 }
