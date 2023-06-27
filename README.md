@@ -148,9 +148,18 @@ class Lead extends Model
 After setting up the above configurations, you can proceed with the following steps:
 
 1. Define custom fields using the `CustomField` model.
-2. Create leads as usual, but with additional custom fields as you defined in the first step.
+2. Create leads as you normally would, but include additional custom fields under the custom key, as defined in the previous step. 
+```php
+[
+    'phone' => '12345678',
+    'custom' => [
+        'zip' => '123'
+    ] 
+]
+
+```
 3. If the custom field value passes validation, it will be stored in the `CustomFieldValue` table.
-4. Retrieve custom field values just like any other attribute of the Lead model. For example, you can access a custom field value using `$lead->customField`.
+4. Retrieve custom field values just like any other attribute of the Lead model but with the prefix `custom`. For example, you can access a custom field value using `$lead->custom_zip`.
 
 By following these steps, you can seamlessly work with custom fields for the Lead model and access their values as if they were regular attributes.
 
