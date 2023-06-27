@@ -23,7 +23,7 @@ class CustomizableTest extends TestCase
             'contextable_type' => $this->account->getMorphClass()
         ];
         $this->customField = CustomField::factory()->create($attributes);
-        $this->user = User::factory()->create(['account_id' => $this->account->id, 'zip_code' => '12345']);
+        $this->user = User::factory()->create(['account_id' => $this->account->id, 'custom' => ['zip_code' => '12345']]);
     }
 
     /**
@@ -43,8 +43,7 @@ class CustomizableTest extends TestCase
     public function validate_custom_fields_should_work()
     {
         $this->expectException(ValidationException::class);
-        $this->user->zip_code = 123;
-        $this->user->validateCustomFields();
+        $user = User::factory()->create(['account_id' => $this->account->id, 'custom' => ['zip_code' => 123]]);
     }
 
     /**
@@ -73,9 +72,9 @@ class CustomizableTest extends TestCase
             ];
         }
         $customField = CustomField::factory()->create($attributes);
-        $user = User::factory()->create(['account_id' => $this->account->id, 'field' => $value]);
+        $user = User::factory()->create(['account_id' => $this->account->id, 'custom' => ['field' => $value]]);
         $user->loadCustomFieldValues();
-        $this->assertEquals($expected, $user->field);
+        $this->assertEquals($expected, $user->custom_field);
     }
 
     public function customFieldDataProvider(): array
