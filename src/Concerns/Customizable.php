@@ -46,13 +46,14 @@ trait Customizable
         if ($customFields->isEmpty()) {
             return;
         }
-        $modelAttributeKeys = $modelAttributes->keys();
-        $customFieldColumns = $modelAttributeKeys->diff($tableColumns);
+        $unvalidatedCustomFields = $modelAttributes->get('custom');
+        if (empty($unvalidatedCustomFields)) {
+            return;
+        }
         $customFieldsRules = $customFields->flatMap(function (CustomField $field) {
             return $field->getValidationRule();
         })->all();
-        $customFieldValues = $modelAttributes->only($customFieldColumns)->toArray();
-        $validator = Validator::make($customFieldValues, $customFieldsRules);
+        $validator = Validator::make($unvalidatedCustomFields, $customFieldsRules);
         $this->validatedCustomFieldValues = $validator->validate();
     }
 
@@ -115,12 +116,12 @@ trait Customizable
      */
     public function loadCustomFieldValues(): void
     {
-        if (! $this->customFieldValues) {
+        if ($this->customFieldValues->isEmpty()) {
             return;
         }
 
         $this->customFieldValues->each(function (CustomFieldValue $customFieldValue) {
-            $attribute = $customFieldValue->customField->key;
+            $attribute = "custom_{$customFieldValue->customField->key}";
             $this->setAttribute($attribute, $customFieldValue->customField->parseValue($customFieldValue->value));
         });
     }

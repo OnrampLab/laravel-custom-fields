@@ -23,7 +23,7 @@ class CustomizableTest extends TestCase
             'contextable_type' => get_class($this->account)
         ];
         $this->customField = CustomField::factory()->create($attributes);
-        $this->user = User::factory()->create(['account_id' => $this->account->id, 'zip_code' => '12345']);
+        $this->user = User::factory()->create(['account_id' => $this->account->id, 'custom' => ['zip_code' => '12345']]);
     }
 
     /**
@@ -43,7 +43,7 @@ class CustomizableTest extends TestCase
      */
     public function update_model_should_update_custom_field_values(): void
     {
-        $attributes = ['zip_code' => '67890'];
+        $attributes = ['custom' => ['zip_code' => '67890']];
         $this->user->fill($attributes);
         $this->user->save();
         $customFieldValue = $this->user->customFieldValues()->where('custom_field_id', $this->customField->id)->first();
@@ -61,6 +61,6 @@ class CustomizableTest extends TestCase
     {
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The given data was invalid.');
-        User::factory()->create(['account_id' => $this->account->id, 'zip_code' => 123]);
+        User::factory()->create(['account_id' => $this->account->id, 'custom' => ['zip_code' => 123]]);
     }
 }
