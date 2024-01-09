@@ -10,8 +10,10 @@ class TextCustomField extends CustomField
 
     public function getValidationRule(): array
     {
+        $rules = ['string'];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => ['string'],
+            $this->key => $rules,
         ];
     }
 

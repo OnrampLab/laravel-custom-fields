@@ -10,8 +10,10 @@ class BooleanCustomField extends CustomField
 
     public function getValidationRule(): array
     {
+        $rules = ['boolean'];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => ['boolean'],
+            $this->key => $rules,
         ];
     }
 
@@ -19,5 +21,4 @@ class BooleanCustomField extends CustomField
     {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
-
 }

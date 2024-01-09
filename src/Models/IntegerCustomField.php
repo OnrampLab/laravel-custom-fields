@@ -10,8 +10,10 @@ class IntegerCustomField extends CustomField
 
     public function getValidationRule(): array
     {
+        $rules = ['integer'];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => ['integer'],
+            $this->key => $rules,
         ];
     }
 
