@@ -100,14 +100,15 @@ trait Customizable
         $customFields->each(function ($customField) use ($validatedCustomFieldValues) {
             if (array_key_exists($customField->key, $validatedCustomFieldValues)) {
                 $value = $validatedCustomFieldValues[$customField->key];
-                if (is_null($value)) {
-                    return;
-                }
                 $constraints = [
                     'custom_field_id' => $customField->id,
                     'customizable_type' => $this->getMorphClass(),
                     'customizable_id' => $this->id
                 ];
+                if (is_null($value)) {
+                    CustomFieldValue::where($constraints)->delete();
+                    return;
+                }
                 $values = ['value' => $value];
                 CustomFieldValue::updateOrCreate($constraints, $values);
             }
