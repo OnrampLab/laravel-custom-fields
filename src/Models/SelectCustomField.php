@@ -12,8 +12,10 @@ class SelectCustomField extends CustomField
     public function getValidationRule(): array
     {
         $options = $this->available_options->pluck('value')->toArray();
+        $rules = [Rule::in($options)];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => [Rule::in($options)]
+            $this->key => $rules,
         ];
     }
     public function parseValue($value): string

@@ -10,8 +10,10 @@ class FloatCustomField extends CustomField
 
     public function getValidationRule(): array
     {
+        $rules = ['numeric'];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => ['numeric'],
+            $this->key => $rules,
         ];
     }
 

@@ -11,8 +11,10 @@ class DateTimeCustomField extends CustomField
 
     public function getValidationRule(): array
     {
+        $rules = ['date'];
+        $rules[] = $this->required ? 'required' : 'nullable';
         return [
-            $this->key => ['date'],
+            $this->key => $rules,
         ];
     }
     public function parseValue($value): string
