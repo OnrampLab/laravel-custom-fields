@@ -100,6 +100,9 @@ trait Customizable
         $customFields->each(function ($customField) use ($validatedCustomFieldValues) {
             if (array_key_exists($customField->key, $validatedCustomFieldValues)) {
                 $value = $validatedCustomFieldValues[$customField->key];
+                if (is_null($value)) {
+                    return;
+                }
                 $constraints = [
                     'custom_field_id' => $customField->id,
                     'customizable_type' => $this->getMorphClass(),
@@ -117,6 +120,10 @@ trait Customizable
     public function loadCustomFieldValues(): void
     {
         if ($this->customFieldValues->isEmpty()) {
+            $this->getCustomFields()->each(function (CustomField $customField) {
+                $attribute = "custom_{$customField->key}";
+                $this->setAttribute($attribute, $customField->default_value);
+            });
             return;
         }
 
