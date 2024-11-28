@@ -64,12 +64,12 @@ class CustomField extends Model
         return $this->hasMany(CustomFieldValue::class);
     }
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
         return [];
     }
 
-    public function parseValue($value): mixed
+    public function parseValue($value, $autoTransform = false): mixed
     {
         return $value;
     }

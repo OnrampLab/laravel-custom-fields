@@ -8,7 +8,7 @@ class FloatCustomField extends CustomField
 {
     use HasParent;
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
         $rules = ['numeric'];
         $rules[] = $this->required ? 'required' : 'nullable';
@@ -17,9 +17,8 @@ class FloatCustomField extends CustomField
         ];
     }
 
-    public function parseValue($value): float
+    public function parseValue($value, $autoTransform = false): float
     {
         return (float) $value;
     }
-
 }

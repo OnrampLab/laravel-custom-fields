@@ -8,7 +8,7 @@ class IntegerCustomField extends CustomField
 {
     use HasParent;
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
         $rules = ['integer'];
         $rules[] = $this->required ? 'required' : 'nullable';
@@ -17,9 +17,8 @@ class IntegerCustomField extends CustomField
         ];
     }
 
-    public function parseValue($value): int
+    public function parseValue($value, $autoTransform = false): int
     {
         return (int) $value;
     }
-
 }
