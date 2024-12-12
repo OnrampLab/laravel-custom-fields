@@ -18,6 +18,11 @@ trait Customizable
 {
     protected array $validatedCustomFieldValues = [];
 
+    protected function isAutoTransform(): bool
+    {
+        return false;
+    }
+
     /**
      * Boot Model Observer.
      */
@@ -51,7 +56,7 @@ trait Customizable
             return;
         }
         $customFieldsRules = $customFields->flatMap(function (CustomField $field) {
-            return $field->getValidationRule();
+            return $field->getValidationRule($this->isAutoTransform());
         })->all();
         $validator = Validator::make($unvalidatedCustomFields, $customFieldsRules);
         $this->validatedCustomFieldValues = $validator->validate();
@@ -130,7 +135,7 @@ trait Customizable
 
         $this->customFieldValues->each(function (CustomFieldValue $customFieldValue) {
             $attribute = "custom_{$customFieldValue->customField->key}";
-            $this->setAttribute($attribute, $customFieldValue->customField->parseValue($customFieldValue->value));
+            $this->setAttribute($attribute, $customFieldValue->customField->parseValue($customFieldValue->value, $this->isAutoTransform()));
         });
     }
 

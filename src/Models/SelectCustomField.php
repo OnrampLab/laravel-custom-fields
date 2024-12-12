@@ -9,7 +9,7 @@ class SelectCustomField extends CustomField
 {
     use HasParent;
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
         $options = $this->available_options->pluck('value')->toArray();
         $rules = [Rule::in($options)];
@@ -18,7 +18,7 @@ class SelectCustomField extends CustomField
             $this->key => $rules,
         ];
     }
-    public function parseValue($value): string
+    public function parseValue($value, $autoTransform = false): string
     {
         return $value;
     }

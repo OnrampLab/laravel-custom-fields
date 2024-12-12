@@ -9,7 +9,7 @@ class DateTimeCustomField extends CustomField
 {
     use HasParent;
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
         $rules = ['date'];
         $rules[] = $this->required ? 'required' : 'nullable';
@@ -17,7 +17,7 @@ class DateTimeCustomField extends CustomField
             $this->key => $rules,
         ];
     }
-    public function parseValue($value): string
+    public function parseValue($value, $autoTransform = false): string
     {
         return Carbon::parse($value)->toDateTimeString();
     }

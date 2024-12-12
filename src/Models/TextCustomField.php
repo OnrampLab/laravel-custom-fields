@@ -8,17 +8,24 @@ class TextCustomField extends CustomField
 {
     use HasParent;
 
-    public function getValidationRule(): array
+    public function getValidationRule($autoTransform = false): array
     {
-        $rules = ['string'];
+        if (!$autoTransform) {
+            $rules = ['string'];
+        }
+
         $rules[] = $this->required ? 'required' : 'nullable';
         return [
             $this->key => $rules,
         ];
     }
 
-    public function parseValue($value): string
+    public function parseValue($value, $autoTransform = false): string
     {
+        if ($autoTransform) {
+            return (string) $value;
+        }
+
         return $value;
     }
 }
